@@ -21,14 +21,15 @@ RUN pip install --no-cache-dir \
     kfp==2.9.0
 
 # Pre-download the VIVIT model and processor
-RUN python -c "from transformers import AutoModel, AutoProcessor; \
+# Use VivitModel and VivitImageProcessor (not AutoModel/AutoProcessor)
+RUN python -c "from transformers import VivitModel, VivitImageProcessor; \
     print('Downloading VIVIT model...'); \
-    AutoModel.from_pretrained('google/vivit-b-16x2-kinetics400'); \
-    AutoProcessor.from_pretrained('google/vivit-b-16x2-kinetics400'); \
+    VivitModel.from_pretrained('google/vivit-b-16x2-kinetics400'); \
+    VivitImageProcessor.from_pretrained('google/vivit-b-16x2-kinetics400'); \
     print('VIVIT model cached successfully!')"
 
 # Set working directory
 WORKDIR /app
 
-# Default command
-CMD ['python']
+# Default command (fix the JSON warning)
+CMD ["python"]
